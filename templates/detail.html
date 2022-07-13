@@ -89,7 +89,6 @@
                 }
             })
         }
-
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃!')
@@ -107,7 +106,6 @@
             </a>
         </div>
         <p class="nick_name">회원 아이디:{{ user_info.username }}</p>
-        <button class="level-item button is-sparta is-medium logout_btn" onclick="sign_out()">로그아웃</button>
     </nav>
 </section>
 
