@@ -12,10 +12,10 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
 
-import certifi
-ca = certifi.where()
-client = MongoClient('mongodb+srv://test:sparta@cluster0.rrtmj.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
+client = MongoClient(
+    'mongodb+srv://test:sparta@cluster0.rrtmj.mongodb.net/?retryWrites=true&w=majority')
 db = client.dbsparta
+
 
 @app.route('/')
 def home():
@@ -43,7 +43,8 @@ def user(username):
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        status = (username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+        # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+        status = (username == payload["id"])
         user_info = db.users.find_one({"username": username}, {"_id": False})
         return render_template('user.html', user_info=user_info, status=status)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
@@ -58,7 +59,8 @@ def sign_in():
     password_receive = request.form['password_give']
 
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
-    result = db.users.find_one({'username': username_receive, 'password': pw_hash})
+    result = db.users.find_one(
+        {'username': username_receive, 'password': pw_hash})
 
     if result is not None:
         payload = {
@@ -77,7 +79,8 @@ def sign_in():
 def sign_up():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
-    password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    password_hash = hashlib.sha256(
+        password_receive.encode('utf-8')).hexdigest()
     doc = {
         "username": username_receive,  # 아이디
         "password": password_hash,  # 비밀번호
@@ -162,6 +165,7 @@ def save_comments():
     db.comments.insert_one(doc)
 
     return jsonify({'msg': '작성 완료!'})
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
