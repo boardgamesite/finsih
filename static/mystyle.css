@@ -8,8 +8,7 @@ body {
     max-width: 750px;
     margin: auto;
 }
-
-nav {
+nav{
     padding: 20px;
 }
 
@@ -51,7 +50,7 @@ input::-webkit-calendar-picker-indicator {
 }
 
 
-.nick_name {
+.nick_name{
     display: block;
     margin-top: 12px;
     margin-left: auto;
